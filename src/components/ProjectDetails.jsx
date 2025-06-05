@@ -1,11 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Star, Heart, Code, Target, Layers, CheckCircle, ExternalLink, Github, Calendar, User, Award } from 'lucide-react'
+import { ArrowLeft, Star, Heart, Code, Target, Layers, CheckCircle, ExternalLink, Github, Calendar, User, Award, ChevronDown, ChevronUp } from 'lucide-react'
 
 const ProjectDetails = ({ project, onBack }) => {
   const [rating, setRating] = useState(0)
   const [liked, setLiked] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
+  const [isSticky, setIsSticky] = useState(false)
+  const [expandedFeature, setExpandedFeature] = useState(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 100)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    window.addEventListener('scroll', handleScroll)
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -41,31 +63,12 @@ const ProjectDetails = ({ project, onBack }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        className="overview-content"
       >
         {/* Hero Section */}
-        <div
-          style={{
-            background: `linear-gradient(135deg, ${project.color || '#667eea'}20, ${project.secondaryColor || '#764ba2'}20)`,
-            borderRadius: 'clamp(16px, 4vw, 24px)',
-            padding: 'clamp(1rem, 4vw, 2rem)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
-        >
+        <div className="hero-section">
           <motion.div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: 'clamp(100px, 25vw, 200px)',
-              height: 'clamp(100px, 25vw, 200px)',
-              background: `linear-gradient(135deg, ${project.color || '#667eea'}40, ${project.secondaryColor || '#764ba2'}40)`,
-              borderRadius: '50%',
-              filter: 'blur(60px)',
-              transform: 'translate(50%, -50%)'
-            }}
+            className="hero-background-animation"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0.5, 0.3]
@@ -77,164 +80,61 @@ const ProjectDetails = ({ project, onBack }) => {
             }}
           />
           
-          <div style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: window.innerWidth <= 768 ? 'flex-start' : 'center', 
-              flexDirection: window.innerWidth <= 480 ? 'column' : 'row',
-              gap: '1rem', 
-              marginBottom: '1rem' 
-            }}>
-              <div
-                style={{
-                  width: 'clamp(60px, 15vw, 80px)',
-                  height: 'clamp(60px, 15vw, 80px)',
-                  borderRadius: 'clamp(12px, 3vw, 20px)',
-                  background: `linear-gradient(135deg, ${project.color || '#667eea'}, ${project.secondaryColor || '#764ba2'})`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 'clamp(20px, 5vw, 32px)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                  flexShrink: 0
-                }}
-              >
+          <div className="hero-content">
+            <div className="hero-header">
+              <div className="project-icon">
                 {project.icon || '🚀'}
               </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <h1 style={{ 
-                  fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', 
-                  fontWeight: '800', 
-                  color: 'white', 
-                  marginBottom: '0.5rem',
-                  lineHeight: '1.2',
-                  wordBreak: 'break-word'
-                }}>
+              <div className="project-info">
+                <h1 className="project-title">
                   {project.title}
                 </h1>
-                <div style={{ 
-                  display: 'flex', 
-                  gap: 'clamp(0.5rem, 3vw, 1rem)', 
-                  alignItems: 'center',
-                  flexWrap: 'wrap'
-                }}>
-                  <span style={{ 
-                    color: 'rgba(255, 255, 255, 0.7)', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '0.5rem',
-                    fontSize: 'clamp(0.8rem, 2.5vw, 1rem)'
-                  }}>
-                    <Calendar size={window.innerWidth <= 480 ? 14 : 16} />
+                <div className="project-meta">
+                  <span className="meta-item">
+                    <Calendar size={16} />
                     {project.date || '2024'}
                   </span>
-                  <span style={{ 
-                    color: 'rgba(255, 255, 255, 0.7)', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '0.5rem',
-                    fontSize: 'clamp(0.8rem, 2.5vw, 1rem)'
-                  }}>
-                    <User size={window.innerWidth <= 480 ? 14 : 16} />
+                  <span className="meta-item">
+                    <User size={16} />
                     {project.role || 'Full Stack Developer'}
                   </span>
                 </div>
               </div>
             </div>
-            <p style={{ 
-              fontSize: 'clamp(0.9rem, 3vw, 1.1rem)', 
-              color: 'rgba(255, 255, 255, 0.9)', 
-              lineHeight: '1.7' 
-            }}>
+            <p className="project-description">
               {project.description}
             </p>
           </div>
         </div>
 
         {/* Problem & Solution Cards */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))', 
-          gap: '1.5rem' 
-        }}>
+        <div className="problem-solution-grid">
           <motion.div
             variants={itemVariants}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 'clamp(16px, 4vw, 20px)',
-              padding: 'clamp(1rem, 4vw, 1.5rem)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)'
-            }}
+            className="card problem-card"
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-              <div
-                style={{
-                  width: 'clamp(40px, 10vw, 48px)',
-                  height: 'clamp(40px, 10vw, 48px)',
-                  borderRadius: 'clamp(8px, 2vw, 12px)',
-                  background: 'linear-gradient(135deg, #ff6b6b, #ee5a52)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}
-              >
-                <Target size={window.innerWidth <= 480 ? 20 : 24} color="white" />
+            <div className="card-header">
+              <div className="card-icon problem-icon">
+                <Target size={20} />
               </div>
-              <h3 style={{ 
-                fontSize: 'clamp(1.1rem, 3.5vw, 1.3rem)', 
-                fontWeight: '700', 
-                color: 'white' 
-              }}>Problem</h3>
+              <h3 className="card-title">Problem</h3>
             </div>
-            <p style={{ 
-              color: 'rgba(255, 255, 255, 0.8)', 
-              lineHeight: '1.6',
-              fontSize: 'clamp(0.85rem, 2.5vw, 1rem)'
-            }}>
+            <p className="card-text">
               {project.problem || "Identifying key challenges and pain points that needed to be addressed in this project."}
             </p>
           </motion.div>
 
           <motion.div
             variants={itemVariants}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 'clamp(16px, 4vw, 20px)',
-              padding: 'clamp(1rem, 4vw, 1.5rem)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)'
-            }}
+            className="card solution-card"
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-              <div
-                style={{
-                  width: 'clamp(40px, 10vw, 48px)',
-                  height: 'clamp(40px, 10vw, 48px)',
-                  borderRadius: 'clamp(8px, 2vw, 12px)',
-                  background: 'linear-gradient(135deg, #51cf66, #40c057)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}
-              >
-                <CheckCircle size={window.innerWidth <= 480 ? 20 : 24} color="white" />
+            <div className="card-header">
+              <div className="card-icon solution-icon">
+                <CheckCircle size={20} />
               </div>
-              <h3 style={{ 
-                fontSize: 'clamp(1.1rem, 3.5vw, 1.3rem)', 
-                fontWeight: '700', 
-                color: 'white' 
-              }}>Solution</h3>
+              <h3 className="card-title">Solution</h3>
             </div>
-            <p style={{ 
-              color: 'rgba(255, 255, 255, 0.8)', 
-              lineHeight: '1.6',
-              fontSize: 'clamp(0.85rem, 2.5vw, 1rem)'
-            }}>
+            <p className="card-text">
               {project.solution || "Implemented innovative solutions using modern technologies to solve the identified problems effectively."}
             </p>
           </motion.div>
@@ -247,56 +147,55 @@ const ProjectDetails = ({ project, onBack }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        style={{ 
-          display: 'grid', 
-          gridTemplateColumns: window.innerWidth <= 480 ? '1fr' : 
-                              window.innerWidth <= 768 ? 'repeat(auto-fit, minmax(250px, 1fr))' :
-                              'repeat(auto-fit, minmax(280px, 1fr))', 
-          gap: '1rem' 
-        }}
+        className="features-content"
       >
-        {(project.features || ['Feature 1', 'Feature 2', 'Feature 3']).map((feature, index) => (
+        {(project.features || [
+          'User Authentication and Authorization',
+          'Real-time Data Synchronization',
+          'Responsive Mobile Design',
+          'Advanced Search and Filtering',
+          'Data Analytics Dashboard',
+          'Cross-platform Compatibility'
+        ]).map((feature, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1, duration: 0.5 }}
-            whileHover={{ y: -5, scale: 1.02 }}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 'clamp(12px, 3vw, 16px)',
-              padding: 'clamp(1rem, 3vw, 1.25rem)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer'
-            }}
+            className="feature-card"
+            onClick={() => setExpandedFeature(expandedFeature === index ? null : index)}
           >
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-              <div
-                style={{
-                  width: 'clamp(28px, 7vw, 32px)',
-                  height: 'clamp(28px, 7vw, 32px)',
-                  borderRadius: 'clamp(6px, 2vw, 8px)',
-                  background: `linear-gradient(135deg, ${project.color || '#667eea'}60, ${project.secondaryColor || '#764ba2'}60)`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  marginTop: '0.25rem'
-                }}
-              >
-                <CheckCircle size={window.innerWidth <= 480 ? 16 : 18} color="white" />
+            <div className="feature-header">
+              <div className="feature-icon">
+                <CheckCircle size={18} />
               </div>
-              <p style={{ 
-                color: 'rgba(255, 255, 255, 0.9)', 
-                lineHeight: '1.5', 
-                margin: 0,
-                fontSize: 'clamp(0.85rem, 2.5vw, 1rem)'
-              }}>
-                {feature}
+              <p className="feature-text">
+                {typeof feature === 'string' ? feature : feature.title}
               </p>
+              {typeof feature === 'object' && feature.description && (
+                <motion.div
+                  animate={{ rotate: expandedFeature === index ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="expand-icon"
+                >
+                  <ChevronDown size={16} />
+                </motion.div>
+              )}
             </div>
+            
+            <AnimatePresence>
+              {expandedFeature === index && typeof feature === 'object' && feature.description && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="feature-description"
+                >
+                  <p>{feature.description}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         ))}
       </motion.div>
@@ -307,30 +206,27 @@ const ProjectDetails = ({ project, onBack }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
+        className="architecture-content"
       >
-        <div
-          style={{
-            background: 'rgba(255, 255, 255, 0.05)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: 'clamp(16px, 4vw, 20px)',
-            padding: 'clamp(1.5rem, 4vw, 2rem)',
-            textAlign: 'center'
-          }}
-        >
-          <Layers size={window.innerWidth <= 480 ? 48 : 64} color="#667eea" style={{ marginBottom: '1rem' }} />
-          <h3 style={{ 
-            color: 'white', 
-            marginBottom: '1rem',
-            fontSize: 'clamp(1.1rem, 3.5vw, 1.3rem)'
-          }}>System Architecture</h3>
-          <p style={{ 
-            color: 'rgba(255, 255, 255, 0.7)',
-            fontSize: 'clamp(0.85rem, 2.5vw, 1rem)',
-            lineHeight: '1.6'
-          }}>
-            {project.architectureDescription || "Detailed system architecture and technical implementation overview."}
+        <div className="architecture-card">
+          <div className="architecture-icon">
+            <Layers size={48} />
+          </div>
+          <h3 className="architecture-title">System Architecture</h3>
+          <p className="architecture-description">
+            {project.architectureDescription || "Detailed system architecture and technical implementation overview including frontend frameworks, backend services, database design, and deployment strategies."}
           </p>
+          
+          {project.architecturePoints && (
+            <div className="architecture-points">
+              {project.architecturePoints.map((point, index) => (
+                <div key={index} className="architecture-point">
+                  <CheckCircle size={16} />
+                  <span>{point}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </motion.div>
     )
@@ -342,100 +238,56 @@ const ProjectDetails = ({ project, onBack }) => {
       initial="hidden"
       animate="visible"
       exit="exit"
-      style={{ 
-        minHeight: '100vh', 
-        padding: 'clamp(1rem, 4vw, 2rem) clamp(1rem, 5vw, 2rem)' 
-      }}
+      className="project-details-container"
     >
-      {/* Back Button */}
-      <motion.button
+      {/* Mobile Header */}
+      <motion.header
+        className={`mobile-header ${isSticky ? 'sticky' : ''}`}
         variants={itemVariants}
-        onClick={onBack}
-        style={{
-          background: 'rgba(255, 255, 255, 0.05)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          borderRadius: 'clamp(8px, 2vw, 12px)',
-          padding: 'clamp(0.6rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem)',
-          color: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          cursor: 'pointer',
-          marginBottom: 'clamp(1.5rem, 4vw, 2rem)',
-          fontSize: 'clamp(0.85rem, 2.5vw, 0.95rem)',
-          fontWeight: '500'
-        }}
-        whileHover={{ 
-          background: 'rgba(255, 255, 255, 0.1)',
-          x: -5,
-          transition: { duration: 0.2 }
-        }}
-        whileTap={{ scale: 0.95 }}
       >
-        <ArrowLeft size={window.innerWidth <= 480 ? 16 : 18} />
-        Back to Projects
-      </motion.button>
+        <motion.button
+          onClick={onBack}
+          className="back-button"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <ArrowLeft size={20} />
+          <span>Back</span>
+        </motion.button>
+        
+        {isSticky && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="sticky-title"
+          >
+            <span>{project.title}</span>
+          </motion.div>
+        )}
+      </motion.header>
 
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: window.innerWidth <= 1024 ? '1fr' : '1fr 350px',
-        gap: 'clamp(1.5rem, 4vw, 2rem)', 
-        alignItems: 'start' 
-      }}>
+      <div className="content-wrapper">
         {/* Main Content */}
-        <div>
+        <div className="main-content">
           {/* Navigation Tabs */}
           <motion.div
             variants={itemVariants}
-            style={{
-              display: 'flex',
-              gap: '0.5rem',
-              marginBottom: 'clamp(1.5rem, 4vw, 2rem)',
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 'clamp(12px, 3vw, 16px)',
-              padding: 'clamp(0.4rem, 1.5vw, 0.5rem)',
-              flexDirection: window.innerWidth <= 480 ? 'column' : 'row'
-            }}
+            className="tab-navigation"
           >
             {[
               { id: 'overview', label: 'Overview', icon: Target },
               { id: 'features', label: 'Features', icon: Award },
-              { id: 'architecture', label: 'Architecture', icon: Layers }
+              { id: 'architecture', label: 'Tech', icon: Layers }
             ].map((tab) => (
               <motion.button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                style={{
-                  flex: 1,
-                  padding: 'clamp(0.6rem, 2vw, 0.75rem) clamp(0.8rem, 2.5vw, 1rem)',
-                  borderRadius: 'clamp(8px, 2vw, 12px)',
-                  border: 'none',
-                  background: activeTab === tab.id 
-                    ? 'linear-gradient(135deg, #667eea, #764ba2)' 
-                    : 'transparent',
-                  color: 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.5rem',
-                  cursor: 'pointer',
-                  fontSize: 'clamp(0.8rem, 2.2vw, 0.9rem)',
-                  fontWeight: '600',
-                  transition: 'all 0.3s ease',
-                  minHeight: '44px' // Better touch target
-                }}
-                whileHover={{
-                  background: activeTab === tab.id 
-                    ? 'linear-gradient(135deg, #667eea, #764ba2)' 
-                    : 'rgba(255, 255, 255, 0.1)'
-                }}
-                whileTap={{ scale: 0.95 }}
+                className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <tab.icon size={window.innerWidth <= 480 ? 14 : 16} />
-                {window.innerWidth <= 480 ? tab.label.split(' ')[0] : tab.label}
+                <tab.icon size={18} />
+                <span className="tab-label">{tab.label}</span>
               </motion.button>
             ))}
           </motion.div>
@@ -446,50 +298,24 @@ const ProjectDetails = ({ project, onBack }) => {
           </AnimatePresence>
         </div>
 
-        {/* Sidebar */}
-        <div style={{ 
-          position: window.innerWidth <= 1024 ? 'static' : 'sticky', 
-          top: window.innerWidth <= 1024 ? 'auto' : '2rem',
-          order: window.innerWidth <= 1024 ? -1 : 0
-        }}>
+        {/* Sidebar/Bottom Panel */}
+        <div className="sidebar">
           {/* Technologies */}
           <motion.div
             variants={itemVariants}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 'clamp(16px, 4vw, 20px)',
-              padding: 'clamp(1rem, 4vw, 1.5rem)',
-              marginBottom: 'clamp(1rem, 3vw, 1.5rem)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)'
-            }}
+            className="sidebar-card technologies-card"
           >
-            <h4 style={{ 
-              color: 'white', 
-              marginBottom: '1rem', 
-              fontSize: 'clamp(1rem, 3vw, 1.1rem)', 
-              fontWeight: '700' 
-            }}>
-              Technologies
-            </h4>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {(project.technologies || ['React', 'Node.js', 'MongoDB']).map((tech, index) => (
+            <h4 className="sidebar-title">Technologies</h4>
+            <div className="technologies-grid">
+              {(project.technologies || ['React', 'Node.js', 'MongoDB', 'Express', 'JavaScript', 'CSS3']).map((tech, index) => (
                 <motion.span
                   key={index}
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: index * 0.1, duration: 0.3 }}
                   whileHover={{ scale: 1.05 }}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: 'white',
-                    padding: 'clamp(0.3rem, 1.5vw, 0.4rem) clamp(0.6rem, 2vw, 0.8rem)',
-                    borderRadius: 'clamp(16px, 4vw, 20px)',
-                    fontSize: 'clamp(0.75rem, 2vw, 0.8rem)',
-                    fontWeight: '500',
-                    border: '1px solid rgba(255, 255, 255, 0.1)'
-                  }}
+                  whileTap={{ scale: 0.95 }}
+                  className="tech-badge"
                 >
                   {tech}
                 </motion.span>
@@ -497,145 +323,915 @@ const ProjectDetails = ({ project, onBack }) => {
             </div>
           </motion.div>
 
-          {/* Interactive Rating */}
-          <motion.div
-            variants={itemVariants}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 'clamp(16px, 4vw, 20px)',
-              padding: 'clamp(1rem, 4vw, 1.5rem)',
-              marginBottom: 'clamp(1rem, 3vw, 1.5rem)',
-              textAlign: 'center'
-            }}
-          >
-            <h4 style={{ 
-              color: 'white', 
-              marginBottom: '1rem', 
-              fontSize: 'clamp(1rem, 3vw, 1.1rem)', 
-              fontWeight: '700' 
-            }}>
-              Rate this Project
-            </h4>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.25rem', marginBottom: '1rem' }}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <motion.button
-                  key={star}
-                  onClick={() => setRating(star)}
-                  whileHover={{ scale: 1.2, y: -2 }}
-                  whileTap={{ scale: 0.9 }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: 'clamp(0.2rem, 1vw, 0.25rem)',
-                    minWidth: '44px',
-                    minHeight: '44px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Star
-                    size={window.innerWidth <= 480 ? 20 : 24}
-                    color={star <= rating ? '#ffd43b' : '#495057'}
-                    fill={star <= rating ? '#ffd43b' : 'none'}
-                  />
-                </motion.button>
-              ))}
-            </div>
 
-            <motion.button
-              onClick={() => setLiked(!liked)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              style={{
-                width: '100%',
-                padding: 'clamp(0.6rem, 2.5vw, 0.75rem)',
-                borderRadius: 'clamp(8px, 2vw, 12px)',
-                border: liked ? 'none' : '1px solid #dc3545',
-                background: liked ? 'linear-gradient(135deg, #dc3545, #c82333)' : 'transparent',
-                color: liked ? 'white' : '#dc3545',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.5rem',
-                cursor: 'pointer',
-                fontSize: 'clamp(0.8rem, 2.2vw, 0.9rem)',
-                fontWeight: '600',
-                marginBottom: '1rem',
-                minHeight: '44px'
-              }}
-            >
-              <Heart size={window.innerWidth <= 480 ? 16 : 18} fill={liked ? 'white' : 'none'} />
-              {liked ? 'Liked!' : 'Like Project'}
-            </motion.button>
-
-            {/* Action Buttons */}
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: window.innerWidth <= 768 ? 'column' : 'column', 
-              gap: 'clamp(0.6rem, 2vw, 0.75rem)' 
-            }}>
-              {project.liveUrl && (
-                <motion.a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    padding: 'clamp(0.6rem, 2.5vw, 0.75rem)',
-                    borderRadius: 'clamp(8px, 2vw, 12px)',
-                    background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                    color: 'white',
-                    textDecoration: 'none',
-                    fontSize: 'clamp(0.8rem, 2.2vw, 0.9rem)',
-                    fontWeight: '600',
-                    minHeight: '44px'
-                  }}
-                >
-                  <ExternalLink size={window.innerWidth <= 480 ? 16 : 18} />
-                  Live Demo
-                </motion.a>
-              )}
-
-              {project.githubUrl && (
-                <motion.a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    padding: 'clamp(0.6rem, 2.5vw, 0.75rem)',
-                    borderRadius: 'clamp(8px, 2vw, 12px)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    color: 'white',
-                    textDecoration: 'none',
-                    fontSize: 'clamp(0.8rem, 2.2vw, 0.9rem)',
-                    fontWeight: '600',
-                    minHeight: '44px'
-                  }}
-                >
-                  <Github size={window.innerWidth <= 480 ? 16 : 18} />
-                  View Code
-                </motion.a>
-              )}
-            </div>
-          </motion.div>
+          
         </div>
       </div>
+
+      <style jsx>{`
+        .project-details-container {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+          color: white;
+          padding-bottom: 2rem;
+          position: relative;
+        }
+
+        .project-details-container::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 40% 70%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+          pointer-events: none;
+        }
+
+        .project-details-container::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: 
+            radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+          background-size: 50px 50px;
+          pointer-events: none;
+        }
+
+        .mobile-header {
+          position: sticky;
+          top: 0;
+          z-index: 50;
+          background: rgba(15, 23, 42, 0.95);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+          padding: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          transition: all 0.3s ease;
+        }
+
+        .mobile-header.sticky {
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(15, 23, 42, 0.8);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 12px;
+          padding: 0.75rem 1rem;
+          color: #e2e8f0;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          min-height: 44px;
+          backdrop-filter: blur(20px);
+        }
+
+        .back-button:hover {
+          background: rgba(15, 23, 42, 0.9);
+          border-color: rgba(139, 92, 246, 0.3);
+          transform: translateX(-2px);
+        }
+
+        .sticky-title {
+          font-weight: 700;
+          font-size: 1.1rem;
+          color: #e2e8f0;
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .content-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          padding: 1rem;
+          max-width: 1200px;
+          margin: 0 auto;
+          position: relative;
+          z-index: 1;
+        }
+
+        @media (min-width: 1025px) {
+          .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            align-items: start;
+          }
+        }
+
+        .main-content {
+          width: 100%;
+        }
+
+        .tab-navigation {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 16px;
+          padding: 0.5rem;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+        }
+
+        .tab-button {
+          flex: 1;
+          min-width: 120px;
+          padding: 0.75rem 1rem;
+          border-radius: 12px;
+          border: none;
+          background: transparent;
+          color: rgba(226, 232, 240, 0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          min-height: 44px;
+          white-space: nowrap;
+        }
+
+        .tab-button.active {
+          background: linear-gradient(135deg, #8b5cf6, #a855f7);
+          color: white;
+          box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .tab-button:not(.active):hover {
+          background: rgba(148, 163, 184, 0.1);
+          color: #e2e8f0;
+        }
+
+        .tab-label {
+          font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+          .tab-label {
+            display: none;
+          }
+          
+          .tab-button {
+            min-width: 60px;
+            padding: 0.75rem;
+          }
+        }
+
+        /* Overview Content */
+        .overview-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        .hero-section {
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 20px;
+          padding: 2rem;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .hero-background-animation {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 200px;
+          height: 200px;
+          background: linear-gradient(135deg, #8b5cf640, #a855f740);
+          border-radius: 50%;
+          filter: blur(60px);
+          transform: translate(50%, -50%);
+        }
+
+        .hero-content {
+          position: relative;
+          z-index: 2;
+        }
+
+        .hero-header {
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+          margin-bottom: 1rem;
+          flex-direction: row;
+        }
+
+        @media (max-width: 480px) {
+          .hero-header {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+          }
+        }
+
+        .project-icon {
+          width: 80px;
+          height: 80px;
+          border-radius: 20px;
+          background: linear-gradient(135deg, #8b5cf6, #a855f7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 32px;
+          box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+          flex-shrink: 0;
+        }
+
+        .project-info {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .project-title {
+          font-size: 2rem;
+          font-weight: 800;
+          color: #e2e8f0;
+          margin-bottom: 0.5rem;
+          line-height: 1.2;
+          word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+          .project-title {
+            font-size: 1.5rem;
+          }
+        }
+
+        .project-meta {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        .meta-item {
+          color: rgba(226, 232, 240, 0.7);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+
+        .project-description {
+          font-size: 1.1rem;
+          color: rgba(226, 232, 240, 0.9);
+          line-height: 1.7;
+          margin: 0;
+        }
+
+        .problem-solution-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+          .problem-solution-grid {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        .card {
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 16px;
+          padding: 1.5rem;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          transition: all 0.3s ease;
+        }
+
+        .card:hover {
+          border-color: rgba(139, 92, 246, 0.3);
+          transform: translateY(-2px);
+        }
+
+        .card-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 1rem;
+        }
+
+        .card-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .problem-icon {
+          background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .solution-icon {
+          background: linear-gradient(135deg, #51cf66, #40c057);
+        }
+
+        .card-title {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: #e2e8f0;
+          margin: 0;
+        }
+
+        .card-text {
+          color: rgba(226, 232, 240, 0.8);
+          line-height: 1.6;
+          margin: 0;
+          font-size: 1rem;
+        }
+
+        /* Features Content */
+        .features-content {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .feature-card {
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 16px;
+          padding: 1.25rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+          background: rgba(15, 23, 42, 0.8);
+          border-color: rgba(139, 92, 246, 0.3);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+        }
+
+        .feature-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .feature-icon {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: linear-gradient(135deg, #8b5cf660, #a855f760);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .feature-text {
+          color: rgba(226, 232, 240, 0.9);
+          margin: 0;
+          flex: 1;
+          font-size: 1rem;
+          font-weight: 500;
+        }
+
+        .expand-icon {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 24px;
+          height: 24px;
+          color: rgba(226, 232, 240, 0.6);
+        }
+
+        .feature-description {
+          margin-top: 0.75rem;
+          padding-top: 0.75rem;
+          border-top: 1px solid rgba(148, 163, 184, 0.2);
+          overflow: hidden;
+        }
+
+        .feature-description p {
+          color: rgba(226, 232, 240, 0.7);
+          margin: 0;
+          line-height: 1.5;
+          font-size: 0.9rem;
+        }
+
+        /* Architecture Content */
+        .architecture-content {
+          width: 100%;
+        }
+
+        .architecture-card {
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 20px;
+          padding: 2rem;
+          text-align: center;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .architecture-icon {
+          margin-bottom: 1rem;
+          color: #8b5cf6;
+        }
+
+        .architecture-title {
+          color: #e2e8f0;
+          margin-bottom: 1rem;
+          font-size: 1.3rem;
+          font-weight: 700;
+        }
+
+        .architecture-description {
+          color: rgba(226, 232, 240, 0.8);
+          font-size: 1rem;
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
+        }
+
+        .architecture-points {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          text-align: left;
+        }
+
+        .architecture-point {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: rgba(226, 232, 240, 0.8);
+          font-size: 0.9rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+          .sidebar {
+            order: -1;
+          }
+        }
+
+        .sidebar-card {
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 20px;
+          padding: 1.5rem;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-title {
+          color: #e2e8f0;
+          margin-bottom: 1rem;
+          font-size: 1.1rem;
+          font-weight: 700;
+        }
+
+        .technologies-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .tech-badge {
+          background: rgba(148, 163, 184, 0.2);
+          color: #e2e8f0;
+          padding: 0.5rem 0.75rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          border: 1px solid rgba(148, 163, 184, 0.3);
+          cursor: pointer;
+          transition: all 0.2s ease;
+          user-select: none;
+        }
+
+        .tech-badge:hover {
+          background: rgba(139, 92, 246, 0.3);
+          border-color: rgba(139, 92, 246, 0.5);
+          transform: translateY(-1px);
+        }
+
+        .rating-stars {
+          display: flex;
+          justify-content: center;
+          gap: 0.25rem;
+          margin-bottom: 1rem;
+        }
+
+        .star-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.5rem;
+          min-width: 44px;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+        }
+
+        .star-button:hover {
+          background: rgba(148, 163, 184, 0.1);
+        }
+
+        .like-button {
+          width: 100%;
+          padding: 0.75rem;
+          border-radius: 12px;
+          border: 1px solid #dc3545;
+          background: transparent;
+          color: #dc3545;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          font-size: 0.9rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+          min-height: 44px;
+          transition: all 0.3s ease;
+        }
+
+        .like-button.liked {
+          background: linear-gradient(135deg, #dc3545, #c82333);
+          color: white;
+          border-color: transparent;
+        }
+
+        .like-button:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .action-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          border-radius: 12px;
+          text-decoration: none;
+          font-size: 0.9rem;
+          font-weight: 600;
+          min-height: 44px;
+          transition: all 0.3s ease;
+        }
+
+        .action-button.primary {
+          background: linear-gradient(135deg, #8b5cf6, #a855f7);
+          color: white;
+        }
+
+        .action-button.secondary {
+          border: 1px solid rgba(148, 163, 184, 0.3);
+          background: rgba(15, 23, 42, 0.6);
+          color: #e2e8f0;
+        }
+
+        .action-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-button.primary:hover {
+          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .action-button.secondary:hover {
+          background: rgba(148, 163, 184, 0.1);
+          border-color: rgba(148, 163, 184, 0.5);
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+          .hero-section {
+            padding: 1.5rem;
+          }
+
+          .project-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+          }
+
+          .card {
+            padding: 1.25rem;
+          }
+
+          .card-icon {
+            width: 40px;
+            height: 40px;
+          }
+
+          .card-title {
+            font-size: 1.1rem;
+          }
+
+          .sidebar-card {
+            padding: 1.25rem;
+          }
+
+          .architecture-card {
+            padding: 1.5rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .content-wrapper {
+            padding: 0.75rem;
+          }
+
+          .hero-section {
+            padding: 1rem;
+          }
+
+          .project-title {
+            font-size: 1.25rem;
+          }
+
+          .project-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+          }
+
+          .meta-item {
+            font-size: 0.8rem;
+          }
+
+          .project-description {
+            font-size: 1rem;
+          }
+
+          .card {
+            padding: 1rem;
+          }
+
+          .feature-card {
+            padding: 1rem;
+          }
+
+          .sidebar-card {
+            padding: 1rem;
+          }
+
+          .architecture-card {
+            padding: 1.25rem;
+          }
+
+          .tech-badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.6rem;
+          }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
+
+        /* Focus states for better accessibility */
+        .back-button:focus,
+        .tab-button:focus,
+        .star-button:focus,
+        .like-button:focus,
+        .action-button:focus,
+        .tech-badge:focus,
+        .feature-card:focus {
+          outline: 2px solid #8b5cf6;
+          outline-offset: 2px;
+        }
+
+        /* Better touch targets */
+        @media (hover: none) and (pointer: coarse) {
+          .tab-button,
+          .star-button,
+          .like-button,
+          .action-button,
+          .back-button {
+            min-height: 48px;
+            min-width: 48px;
+          }
+
+          .tech-badge {
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .feature-card {
+            min-height: 60px;
+          }
+        }
+
+        /* Loading states */
+        .loading {
+          opacity: 0.6;
+          pointer-events: none;
+        }
+
+        /* Smooth scrolling */
+        html {
+          scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar for webkit browsers */
+        .tab-navigation::-webkit-scrollbar {
+          height: 4px;
+        }
+
+        .tab-navigation::-webkit-scrollbar-track {
+          background: rgba(148, 163, 184, 0.1);
+          border-radius: 2px;
+        }
+
+        .tab-navigation::-webkit-scrollbar-thumb {
+          background: rgba(148, 163, 184, 0.3);
+          border-radius: 2px;
+        }
+
+        .tab-navigation::-webkit-scrollbar-thumb:hover {
+          background: rgba(148, 163, 184, 0.5);
+        }
+
+        /* Print styles */
+        @media print {
+          .mobile-header,
+          .tab-navigation,
+          .rating-stars,
+          .like-button,
+          .action-buttons {
+            display: none !important;
+          }
+
+          .project-details-container {
+            background: white !important;
+            color: black !important;
+          }
+
+          .sidebar-card,
+          .card,
+          .hero-section,
+          .feature-card,
+          .architecture-card {
+            background: white !important;
+            border: 1px solid #ccc !important;
+            break-inside: avoid;
+          }
+        }
+
+        /* Enhanced mobile interactions */
+        @media (max-width: 768px) {
+          .feature-card:active {
+            transform: scale(0.98);
+          }
+
+          .tech-badge:active {
+            transform: scale(0.95);
+          }
+
+          .action-button:active {
+            transform: scale(0.98);
+          }
+
+          .star-button:active {
+            transform: scale(0.9);
+          }
+        }
+
+        /* Improved dark mode contrast */
+        .project-details-container {
+          color: #f1f5f9;
+        }
+
+        .hero-section,
+        .card,
+        .feature-card,
+        .architecture-card,
+        .sidebar-card {
+          background: rgba(15, 23, 42, 0.7);
+          border-color: rgba(148, 163, 184, 0.25);
+        }
+
+        .project-title,
+        .card-title,
+        .architecture-title,
+        .sidebar-title {
+          color: #f1f5f9;
+        }
+
+        .project-description,
+        .card-text,
+        .feature-text,
+        .architecture-description {
+          color: rgba(241, 245, 249, 0.9);
+        }
+
+        .meta-item {
+          color: rgba(148, 163, 184, 0.8);
+        }
+
+        /* Enhanced gradient effects */
+        .project-icon {
+          background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+          box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+        }
+
+        .tab-button.active {
+          background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+          box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .action-button.primary {
+          background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+        }
+
+        /* Improved glass morphism */
+        .mobile-header,
+        .tab-navigation,
+        .hero-section,
+        .card,
+        .feature-card,
+        .architecture-card,
+        .sidebar-card {
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+        }
+
+        /* Enhanced animations */
+        .hero-background-animation {
+          background: linear-gradient(135deg, #8b5cf640, #a855f740, #ec489940);
+        }
+
+        /* Better mobile typography */
+        @media (max-width: 480px) {
+          .project-title {
+            font-size: 1.5rem;
+            line-height: 1.3;
+          }
+
+          .card-title {
+            font-size: 1rem;
+          }
+
+          .architecture-title {
+            font-size: 1.1rem;
+          }
+
+          .sidebar-title {
+            font-size: 1rem;
+          }
+        }
+      `}</style>
     </motion.div>
   )
 }
