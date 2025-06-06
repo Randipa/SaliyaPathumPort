@@ -14,7 +14,7 @@ export const projectsData = [
       "Admin dashboard for inventory management",
       "Order tracking system"
     ],
-    architectureImage: "/architecture-ecommerce.png",
+    architectureImage: "/ArchitecherDiagramDigitalCard.jpg",
     liveUrl: "https://example-ecommerce.com",
     githubUrl: "https://github.com/yourusername/ecommerce"
   },

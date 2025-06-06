@@ -217,6 +217,22 @@ const ProjectDetails = ({ project, onBack }) => {
             {project.architectureDescription || "Detailed system architecture and technical implementation overview including frontend frameworks, backend services, database design, and deployment strategies."}
           </p>
           
+          {/* View Architecture Button */}
+          {project.architectureImage && (
+            <motion.button
+              onClick={() => window.open(project.architectureImage, '_blank')}
+              className="view-architecture-button"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <ExternalLink size={20} />
+              <span>View Architecture Diagram</span>
+            </motion.button>
+          )}
+
           {project.architecturePoints && (
             <div className="architecture-points">
               {project.architecturePoints.map((point, index) => (
@@ -322,7 +338,6 @@ const ProjectDetails = ({ project, onBack }) => {
               ))}
             </div>
           </motion.div>
-
 
           
         </div>
@@ -777,6 +792,37 @@ const ProjectDetails = ({ project, onBack }) => {
           margin-bottom: 1.5rem;
         }
 
+        /* View Architecture Button */
+        .view-architecture-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.75rem;
+          padding: 1rem 1.5rem;
+          margin: 1.5rem 0;
+          background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+          min-height: 48px;
+          width: 100%;
+        }
+
+        .view-architecture-button:hover {
+          background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e3a8a 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .view-architecture-button:active {
+          transform: translateY(0);
+        }
+
         .architecture-points {
           display: flex;
           flex-direction: column;
@@ -844,6 +890,51 @@ const ProjectDetails = ({ project, onBack }) => {
           background: rgba(139, 92, 246, 0.3);
           border-color: rgba(139, 92, 246, 0.5);
           transform: translateY(-1px);
+        }
+
+        /* Project Links */
+        .links-card {
+          margin-top: 1rem;
+        }
+
+        .project-links {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .project-link {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1rem;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .live-link {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+
+        .live-link:hover {
+          background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .github-link {
+          background: rgba(255, 255, 255, 0.1);
+          color: #e2e8f0;
+        }
+
+        .github-link:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
         }
 
         .rating-stars {
@@ -978,6 +1069,15 @@ const ProjectDetails = ({ project, onBack }) => {
           .architecture-card {
             padding: 1.5rem;
           }
+
+          .project-links {
+            gap: 0.5rem;
+          }
+
+          .project-link {
+            padding: 0.625rem 0.75rem;
+            font-size: 0.9rem;
+          }
         }
 
         @media (max-width: 480px) {
@@ -1045,7 +1145,8 @@ const ProjectDetails = ({ project, onBack }) => {
         .like-button:focus,
         .action-button:focus,
         .tech-badge:focus,
-        .feature-card:focus {
+        .feature-card:focus,
+        .view-architecture-button:focus {
           outline: 2px solid #8b5cf6;
           outline-offset: 2px;
         }
@@ -1056,7 +1157,8 @@ const ProjectDetails = ({ project, onBack }) => {
           .star-button,
           .like-button,
           .action-button,
-          .back-button {
+          .back-button,
+          .view-architecture-button {
             min-height: 48px;
             min-width: 48px;
           }
@@ -1145,6 +1247,10 @@ const ProjectDetails = ({ project, onBack }) => {
 
           .star-button:active {
             transform: scale(0.9);
+          }
+
+          .view-architecture-button:active {
+            transform: scale(0.98);
           }
         }
 
