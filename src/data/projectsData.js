@@ -56,40 +56,35 @@ export const projectsData = [
     githubUrl: "https://github.com/yourusername/healthcare"
   },
   {
-    id: 2,
-    title: "Skill Sharing Application",
-    description: "Any user can connect with their friends and the global community to share skills and ideas without any barriers.",
-    problem: "Users are unable to easily share their skills with friends and professionals due to the lack of proper channels and complicated platforms, making it difficult to collaborate or gain new knowledge.",
-    solution: "This platform makes it simple and fast to share your skills with others, stay updated, expand your knowledge, and even discover new job opportunities.",
-    technologies: ["React", "Spring Boot", "Docker", "MySQL", "REST API", "WebSocket"],
+    id: 4,
+    title: "Learning Management System (Login and Payment)",
+    description: "This system allows users to log in using their phone number, receive a verification code, and make payments using the PayHere payment gateway.",
+    problem: "The client prefers users to log in using their phone number instead of an email address. Therefore, an SMS OTP system is required, and the payment process must also be online.",
+    solution: "Implemented SMS gateway for phone number verification and integrated PayHere as the online payment gateway.",
+    technologies: ["React", "Node.js", "MongoDB", "Payment and SMS Gateway", "REST API"],
     features: [
-      "Users can share posts",
-      "Discover new friends",
-      "Like and comment on posts",
-      "Chat with friends",
-      "Receive all notifications",
+      "Users can sign up and verify their phone number",
+      "Users can log in using their verified phone number",
+      "Supports online payments",
     ],
-    architectureImage: "/archidargramSkilShareing.jpg",
+
     liveUrl: "https://example-taskmanager.com",
     githubUrl: "https://github.com/yourusername/taskmanager"
 
   },
   {
-    id: 3,
-    title: "Healthcare Management System",
-    description: "Digital platform for managing patient records and appointments",
-    problem: "Healthcare providers needed efficient digital solutions for patient management",
-    solution: "Created a comprehensive healthcare management system with appointment scheduling and record keeping",
-    technologies: ["React", "Express.js", "PostgreSQL", "JWT", "Chart.js"],
+    id: 5,
+    title: "Re-develop Coiroots Website",
+    description: "The client requested an update to their Coiroots website with new features and improvements.",
+    problem: "The website was not user-friendly, had slow loading times, and required updates to images and documents.",
+    solution: "Optimized image loading with compression, fixed bugs in the code, and updated all required documents.",
+    technologies: ["Next.js"],
     features: [
-      "Patient registration and records",
-      "Appointment scheduling",
-      "Prescription management",
-      "Medical history tracking",
-      "Report generation",
-      "Staff management"
+      "Improved user-friendly interface",
+      "Fast loading with no delays",
+      "All documents are clear and readable",
     ],
-    architectureImage: "/architecture-healthcare.png",
+
     liveUrl: "https://example-healthcare.com",
     githubUrl: "https://github.com/yourusername/healthcare"
   }

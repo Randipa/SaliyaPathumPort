@@ -60,8 +60,8 @@ const Introduction = ({ onNext }) => {
 
   const stats = [
     { label: "Years Experience", value: "1.5+" },
-    { label: "Projects Completed", value: "15+" },
-    { label: "Technologies", value: "10+" }
+    { label: "Projects Completed", value: "8+" },
+    { label: "Technologies", value: "6+" }
   ];
 
   return (
@@ -199,7 +199,7 @@ const Introduction = ({ onNext }) => {
                     transition={{ duration: 0.8, delay: 0.5 }}
                   />
                   <p className="subtitle">
-                    Full Stack Developer & Tech Enthusiast
+                    Full Stack Software Developer
                   </p>
                 </div>
               </motion.div>
@@ -228,9 +228,7 @@ const Introduction = ({ onNext }) => {
                       <p className="info-text">{item.text}</p>
                       <span className="info-detail">{item.detail}</span>
                     </div>
-                    <div className="info-arrow">
-                      <ChevronRight size={16} />
-                    </div>
+                    
                   </motion.div>
                 ))}
               </motion.div>
