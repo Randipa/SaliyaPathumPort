@@ -91,12 +91,12 @@ const ProjectDetails = ({ project, onBack }) => {
                 </h1>
                 <div className="project-meta">
                   <span className="meta-item">
-                    <Calendar size={16} />
-                    {project.date || '2024'}
+                   
+                   
                   </span>
                   <span className="meta-item">
                     <User size={16} />
-                    {project.role || 'Full Stack Developer'}
+                    {project.role || 'Developed by Saliya Pathum'}
                   </span>
                 </div>
               </div>

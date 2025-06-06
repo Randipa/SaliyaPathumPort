@@ -1,18 +1,16 @@
 export const projectsData = [
   {
     id: 1,
-    title: "E-Commerce Platform",
-    description: "Full-stack e-commerce solution with modern UI and secure payment integration",
-    problem: "Small businesses struggled with setting up online stores quickly and affordably",
-    solution: "Built a customizable e-commerce platform with easy setup, integrated payment gateways, and inventory management",
-    technologies: ["React", "Node.js", "MongoDB", "Stripe API", "Redux"],
+    title: "Smart Digital NFT Business Cards",
+    description: "A full-stack smart business card solution being developed for the first time in Sri Lanka.",
+    problem: "Previously, templates were created using WordPress. When a customer requested a business card template, it had to be created manually through WordPress. This process was very difficult and time-consuming, and customers often had to wait several days.",
+    solution: "This solution allows customers to customize their entire template according to their preferences within 1 minute, making the process much faster and more efficient.",
+    technologies: ["React", "Node.js", "MongoDB", "Restful API", "Redux"],
     features: [
-      "User authentication and authorization",
-      "Product catalog with search and filters",
-      "Shopping cart and checkout process",
-      "Payment integration with Stripe",
-      "Admin dashboard for inventory management",
-      "Order tracking system"
+      "Users can update any template of their choice",
+      "Share contact details via QR scan",
+      "Easily save contact information",
+      "Add all the social media platforms you use in the way you prefer",
     ],
     architectureImage: "/ArchitecherDiagramDigitalCard.jpg",
     liveUrl: "https://example-ecommerce.com",
