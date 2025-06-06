@@ -37,6 +37,45 @@ export const projectsData = [
   },
   {
     id: 3,
+    title: "Job Tracking Management System",
+    description: "This system is specifically designed to fully manage and control operations in a digital printing workplace.",
+    problem: "Around 50 orders come in daily from Fiverr and local sources, with about 40 orders going out each day. Managing this entire process is very difficult, and there's no proper way to monitor the work done by employees.",
+    solution: "This solution allows complete tracking of orders through to the printing stage. The management team can easily send messages through the system when an update is made. It helps manage the workload very efficiently.",
+    technologies: ["PHP", "MySQL", "HTML", "CSS"],
+    features: [
+      "Admins can assign incoming orders to the relevant workers based on job type",
+      "Workers can start, hold, and complete jobs assigned to them",
+      "Real-time chat with the admin is available",
+      "Document sharing functionality is included",
+      "Working hours can be tracked",
+      "Staff management capabilities are built-in"
+    ],
+
+    
+    liveUrl: "https://example-healthcare.com",
+    githubUrl: "https://github.com/yourusername/healthcare"
+  },
+  {
+    id: 2,
+    title: "Skill Sharing Application",
+    description: "Any user can connect with their friends and the global community to share skills and ideas without any barriers.",
+    problem: "Users are unable to easily share their skills with friends and professionals due to the lack of proper channels and complicated platforms, making it difficult to collaborate or gain new knowledge.",
+    solution: "This platform makes it simple and fast to share your skills with others, stay updated, expand your knowledge, and even discover new job opportunities.",
+    technologies: ["React", "Spring Boot", "Docker", "MySQL", "REST API", "WebSocket"],
+    features: [
+      "Users can share posts",
+      "Discover new friends",
+      "Like and comment on posts",
+      "Chat with friends",
+      "Receive all notifications",
+    ],
+    architectureImage: "/archidargramSkilShareing.jpg",
+    liveUrl: "https://example-taskmanager.com",
+    githubUrl: "https://github.com/yourusername/taskmanager"
+
+  },
+  {
+    id: 3,
     title: "Healthcare Management System",
     description: "Digital platform for managing patient records and appointments",
     problem: "Healthcare providers needed efficient digital solutions for patient management",
