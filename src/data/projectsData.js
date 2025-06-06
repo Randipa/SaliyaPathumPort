@@ -18,22 +18,22 @@ export const projectsData = [
   },
   {
     id: 2,
-    title: "Task Management System",
-    description: "Collaborative project management tool with real-time updates",
-    problem: "Teams needed better tools for remote collaboration and task tracking",
-    solution: "Developed a real-time task management system with team collaboration features",
-    technologies: ["React", "Firebase", "Material-UI", "Socket.io"],
+    title: "Skill Sharing Application",
+    description: "Any user can connect with their friends and the global community to share skills and ideas without any barriers.",
+    problem: "Users are unable to easily share their skills with friends and professionals due to the lack of proper channels and complicated platforms, making it difficult to collaborate or gain new knowledge.",
+    solution: "This platform makes it simple and fast to share your skills with others, stay updated, expand your knowledge, and even discover new job opportunities.",
+    technologies: ["React", "Spring Boot", "Docker", "MySQL", "REST API", "WebSocket"],
     features: [
-      "Real-time task updates",
-      "Team collaboration features",
-      "Kanban board view",
-      "File sharing capabilities",
-      "Activity tracking",
-      "Email notifications"
+      "Users can share posts",
+      "Discover new friends",
+      "Like and comment on posts",
+      "Chat with friends",
+      "Receive all notifications",
     ],
-    architectureImage: "/architecture-taskmanager.png",
+    architectureImage: "/archidargramSkilShareing.jpg",
     liveUrl: "https://example-taskmanager.com",
     githubUrl: "https://github.com/yourusername/taskmanager"
+
   },
   {
     id: 3,
