@@ -5,7 +5,7 @@ export const projectsData = [
     description: "A full-stack smart business card solution being developed for the first time in Sri Lanka.",
     problem: "Previously, templates were created using WordPress. When a customer requested a business card template, it had to be created manually through WordPress. This process was very difficult and time-consuming, and customers often had to wait several days.",
     solution: "This solution allows customers to customize their entire template according to their preferences within 1 minute, making the process much faster and more efficient.",
-    technologies: ["React", "Node.js", "MongoDB", "Restful API", "Redux"],
+    technologies: ["React", "Node.js", "MongoDB", "Restful API"],
     features: [
       "Users can update any template of their choice",
       "Share contact details via QR scan",
