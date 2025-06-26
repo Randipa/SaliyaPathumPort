@@ -336,7 +336,7 @@ const Welcome = () => {
               }}
               whileHover={{ scale: 1.05 }}
             >
-              Intro Solution
+              Unitec Software Solution
             </motion.span>
           </p>
         </motion.div>
